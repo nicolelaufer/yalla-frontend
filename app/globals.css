@@ -33,3 +33,71 @@ html, body, :root{
   border-radius: 20px;
   border: 3px solid var(--primary);
 }
+
+:root {
+  --checkbox-border-color: #8b8c89;
+  --checkbox-checked-color: white;
+  --checkbox-hover-color: #4a1d6e;
+  --checkbox-disabled-bg-color: #d9d9d9;
+}
+
+input[type="checkbox"] {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--checkbox-border-color);
+  appearance: none;
+  background-color: transparent;
+  outline: none;
+  transition: outline 0.1s;
+}
+
+input[type="checkbox"]:checked {
+  background-size: cover; 
+  padding: 2px; 
+}
+
+input[type="checkbox"]:not(:disabled):checked {
+  border-color: var(--checkbox-hover-color); 
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" xml:space="preserve"><path style="fill: %23ffffff" d="M11.941,28.877l-11.941-11.942l5.695-5.696l6.246,6.246l14.364-14.364L32,8.818"/></svg>'); /* Change check sign to white */
+  background-color: var(--checkbox-hover-color); 
+}
+
+input[type="checkbox"]:disabled {
+  background-color: var(--checkbox-disabled-bg-color); 
+}
+
+input[type="checkbox"]:disabled:checked {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" xml:space="preserve"><path style="fill: %238b8c89" d="M11.941,28.877l-11.941-11.942l5.695-5.696l6.246,6.246l14.364-14.364L32,8.818"/></svg>');
+}
+
+input[type="checkbox"]:not(:disabled) {
+  position: relative; 
+}
+
+input[type="checkbox"]:not(:disabled):before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 19px solid transparent;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s, border-color 0.3s;
+  transform: translate(-50%, -50%); 
+}
+
+@media (hover: hover) {
+  input[type="checkbox"]:not(:disabled):hover:before {
+    border-color: var(--checkbox-hover-color);
+    opacity: 0.5;
+  }
+}
+
+input[type="checkbox"]:focus-visible {
+  outline: 8px solid var(--checkbox-hover-color);
+  transform: scale(1.05);
+  outline-offset: -10px;
+}

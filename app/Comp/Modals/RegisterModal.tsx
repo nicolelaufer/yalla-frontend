@@ -2,10 +2,9 @@
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
-import { AiFillGithub } from "react-icons/ai";
 import Input from "../inputs/Input";
 import { toast } from "react-hot-toast";
 import { API_URL } from "@/app/config";
@@ -28,11 +27,12 @@ const RegisterModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-
+    console.log(data)
     axios
-      .post(`${API_URL}/api/register`, data)
+      .post(`${API_URL}user/register`, data)
       .then(() => {
         RegisterModal.onClose();
+        toast.success("Account Created");
       })
       .catch((error) => {
         toast.error("Invalid Details");
@@ -90,6 +90,40 @@ const RegisterModal = () => {
         errors={errors}
         required={false}
       />
+      <Input
+        id="languages"
+        type="checkbox"
+        label="Languages"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required={false}
+        options={[
+          "Hebrew",
+          "French",
+          "Arabic",
+          "English",
+          "Spanish",
+          "Portuguese",
+        ]}
+      />
+      <Input
+        id="skills"
+        type="checkbox"
+        label="Skills"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required={false}
+        options={[
+          "Communication",
+          "Manual work",
+          "Programming",
+          "Photography",
+          "Content Creation",
+          "Technical Writing",
+        ]}
+      />
     </div>
   );
 
@@ -98,7 +132,7 @@ const RegisterModal = () => {
       disabled={isLoading}
       isOpen={RegisterModal.isOpen}
       title="Register"
-      actionLabel="Continue"
+      actionLabel="Sign Up"
       onClose={RegisterModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

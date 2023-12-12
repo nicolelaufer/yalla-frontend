@@ -2,18 +2,29 @@
 
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "../hooks/useRegisterModal";
+import useLoginModal from "../hooks/useLoginModal";
+import { useOnClickOutside } from "usehooks-ts";
 
 const UserMenu = () => {
   const RegisterModal = useRegisterModal();
+  const LoginModal = useLoginModal();
+  const ref = useRef(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+
+  const handleClickOutside = () => {
+    setIsOpen(false);
+  };
+
+  useOnClickOutside(ref, handleClickOutside);
+
   return (
     <div className="relative">
       <div
@@ -21,7 +32,6 @@ const UserMenu = () => {
         items-center gap-3"
       >
         <div
-          onDoubleClick={() => {}}
           className="hidden
             md:block
             text-sm
@@ -54,6 +64,7 @@ const UserMenu = () => {
 
       {isOpen && (
         <div
+          ref={ref}
           className="
                 absolute rounded-xl
                 shadow-md
@@ -65,7 +76,7 @@ const UserMenu = () => {
             className="
                     flex flex-col cursor-pointer"
           >
-            <MenuItem onClick={() => {}} label="Login" />
+            <MenuItem onClick={LoginModal.onOpen} label="Login" />
             <MenuItem onClick={RegisterModal.onOpen} label="Sign Up" />
           </div>
         </div>

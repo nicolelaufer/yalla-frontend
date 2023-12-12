@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
+import { useOnClickOutside } from "usehooks-ts";
 
 interface ModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ const Modal: React.FC<ModalProps> = ({
   secondaryAction,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const ref = useRef(null);
 
   useEffect(() => {
     setShowModal(isOpen);
@@ -59,25 +61,35 @@ const Modal: React.FC<ModalProps> = ({
     secondaryAction();
   }, [disabled, secondaryAction]);
 
+  const handleClickOutside = useCallback(() => {
+      if (disabled) {
+        return;
+      }
+        handleClose();
+      }, [disabled, handleClose]);
+
+  useOnClickOutside(ref, handleClickOutside);
+
   if (!isOpen) {
     return null;
   }
 
   return (
     <div
+    // onClick={handleClickOutside}
       className="
-  justify-center
-  items-center
-  flex
-  overflow-x-hidden
-  overflow-y-hidden
-  inset-0
-  fixed
-  z-50
-  outline-none
-  focus:outline-none
-  bg-neutral-800/70
-  "
+        justify-center
+        items-center
+        flex
+        overflow-x-hidden
+        overflow-y-hidden
+        inset-0
+        fixed
+        z-50
+        outline-none
+        focus:outline-none
+        bg-neutral-800/70
+        "
     >
       <div
         className="
@@ -90,7 +102,9 @@ const Modal: React.FC<ModalProps> = ({
     mx-auto
     my-6
     lg:h-auto
-    md:h-auto"
+    md:h-auto
+    "
+    
       >
         <div
           className={`
@@ -101,6 +115,7 @@ const Modal: React.FC<ModalProps> = ({
         ${showModal ? "opacity-100" : "opacity-0"}`}
         >
           <div
+            ref={ref}
             className="
             translate
             h-full
